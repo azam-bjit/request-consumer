@@ -4,16 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.rakuten.mule.rnd</groupId>
 	<artifactId>request-consumer</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>mule</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>mule</packaging>
 	<name>Mule request-consumer Application</name>
 
-    <properties>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<mule.version>3.9.0</mule.version>
-    	<mule.tools.version>1.2</mule.tools.version>
+		<mule.tools.version>1.2</mule.tools.version>
 	</properties>
 
 	<build>
@@ -24,18 +24,14 @@
 				<version>${mule.tools.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-                    <copyToAppsDirectory>true</copyToAppsDirectory>
-				<inclusions>
-                        <inclusion>
-                            <groupId>com.mulesoft.muleesb.modules</groupId>
-                            <artifactId>mule-module-anypoint-mq-ee</artifactId>
-                        </inclusion>
-                    <inclusion>
-                            <groupId>org.mule.transports</groupId>
-                            <artifactId>mule-transport-amqp</artifactId>
-                        </inclusion>
-                    </inclusions>
-                </configuration>
+					<copyToAppsDirectory>false</copyToAppsDirectory>
+					<inclusions>
+						<inclusion>
+							<groupId>org.mule.transports</groupId>
+							<artifactId>mule-transport-amqp</artifactId>
+						</inclusion>
+					</inclusions>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -61,6 +57,48 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<version>2.2.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.rakuten.mule.rnd</groupId>
+									<artifactId>request-consumer</artifactId>
+									<version>1.0.0-SNAPSHOT</version>
+									<type>zip</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>E:\mule-standalone-3.9.0\apps</outputDirectory>
+									<destFileName>request-consumer-1.0.0-SNAPSHOT.zip</destFileName>
+								</artifactItem>
+							</artifactItems>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -68,7 +106,7 @@
 	<dependencies>
 		<!-- Xml configuration -->
 		<dependency>
-        	<groupId>com.mulesoft.muleesb</groupId>
+			<groupId>com.mulesoft.muleesb</groupId>
 			<artifactId>mule-core-ee</artifactId>
 			<version>${mule.version}</version>
 			<scope>provided</scope>
@@ -94,13 +132,13 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-        	<groupId>com.mulesoft.muleesb.transports</groupId>
+			<groupId>com.mulesoft.muleesb.transports</groupId>
 			<artifactId>mule-transport-jdbc-ee</artifactId>
 			<version>${mule.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-        	<groupId>com.mulesoft.muleesb.transports</groupId>
+			<groupId>com.mulesoft.muleesb.transports</groupId>
 			<artifactId>mule-transport-jms-ee</artifactId>
 			<version>${mule.version}</version>
 			<scope>provided</scope>
@@ -131,61 +169,82 @@
 			<version>${mule.version}</version>
 			<scope>test</scope>
 		</dependency>
-	<!-- <dependency>
+		<dependency>
+			<groupId>org.mule.transports</groupId>
+			<artifactId>mule-transport-amqp</artifactId>
+			<version>3.7.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-spring-config</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- <dependency>
             <groupId>com.mulesoft.muleesb.modules</groupId>
             <artifactId>mule-module-anypoint-mq-ee</artifactId>
             <version>1.0.1</version>
         </dependency> -->
-    <dependency>
-            <groupId>org.mule.transports</groupId>
-            <artifactId>mule-transport-amqp</artifactId>
-            <version>3.7.8</version>
-        </dependency>
-    <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-spring-config</artifactId>
-            <version>${mule.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    <!-- <dependency>
-            <groupId>com.mulesoft.muleesb.modules</groupId>
-            <artifactId>mule-module-anypoint-mq-ee</artifactId>
-            <version>1.0.1</version>
-        </dependency> -->
-
-    <dependency>
-            <groupId>com.mulesoft.muleesb.modules</groupId>
-            <artifactId>mule-module-anypoint-mq-ee</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-    </dependencies>
+	</dependencies>
 
 	<repositories>
-          <repository>
-            <id>Central</id>
-            <name>Central</name>
-            <url>http://repo1.maven.org/maven2/</url>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>mulesoft-releases</id>
-            <name>MuleSoft Releases Repository</name>
-            <url>http://repository.mulesoft.org/releases/</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>mulesoft-release</id>
-            <name>mulesoft release repository</name>
-            <layout>default</layout>
-            <url>http://repository.mulesoft.org/releases/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-    
+		<repository>
+			<id>Central</id>
+			<name>Central</name>
+			<url>http://repo1.maven.org/maven2/</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>mulesoft-releases</id>
+			<name>MuleSoft Releases Repository</name>
+			<url>http://repository.mulesoft.org/releases/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>mulesoft-release</id>
+			<name>mulesoft release repository</name>
+			<layout>default</layout>
+			<url>http://repository.mulesoft.org/releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>mule-public</id>
+			<url>https://repository.mulesoft.org/nexus/content/repositories/releases</url>
+		</pluginRepository>
+	</pluginRepositories>
 
+	<profiles>
+		<profile>
+			<id>standalone</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.mule.tools.maven</groupId>
+						<artifactId>mule-maven-plugin</artifactId>
+						<configuration>
+							<deploymentType>standalone</deploymentType>
+							<muleVersion>${mule.version}</muleVersion> 
+							<muleHome>${mule.home}</muleHome> 
+							<applicationName>${project.artifactId}</applicationName> 
+							<community>true</community> 
+						</configuration>
+						<executions>
+							<execution>
+								<id>deploy</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
